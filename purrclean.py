@@ -4,7 +4,9 @@ import serial
 import time
 
 app = Flask(__name__)
-
+"""
+for further work : Connecting Arduino with Raspberry Pi
+"""
 def arduino():
     arduino = serial.Serial('COM3', 9600, timeout=.1)
     time.sleep(2)
@@ -22,7 +24,6 @@ def gen_frames():
         if not success:
             break
         
-        # Kedi tespiti
         cat_cascade = cv2.CascadeClassifier('haarcascade_frontalcatface_extended.xml')
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         cats = cat_cascade.detectMultiScale(gray, 1.3, 5, minSize=(75, 75))
@@ -36,7 +37,7 @@ def gen_frames():
             last_time_cat_seen = time.time()
 
         if cat_detected and (time.time() - last_time_cat_seen > 10):
-           # arduino.write(b'1') şuanda arduino ile bağlantı yok 
+           # arduino.write(b'1') no arduino connextion rn
             cat_detected = False
 
         ret, buffer = cv2.imencode('.jpg', frame)
@@ -48,7 +49,7 @@ def gen_frames():
 def index():
     return "Webcam aktif! '/video_feed'"
 
-@app.route('/video_feed')
+@app.route('/video')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
