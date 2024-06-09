@@ -47,7 +47,7 @@ def gen_frames():
 
 @app.route('/')
 def index():
-    return "Webcam aktif! '/video_feed'"
+    return "Webcam aktif! '/video'"
 
 @app.route('/video')
 def video_feed():
